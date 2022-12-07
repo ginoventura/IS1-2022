@@ -1,0 +1,64 @@
+@startuml
+abstract class Persona {
+    - nombre
+    - apellido
+    - dni
+}
+
+class Cliente extends Persona{
+    - mail
+    - telefono
+    - TipoCliente tipo
+}
+
+class TipoCliente {
+    - codigoTipoCliente
+    - descripcion
+}
+
+class Vehiculo {
+    - Cliente dueño
+    - TipoVehiculo tipo
+    - dominio
+    - marca
+    - modelo
+    - año 
+    - color
+}
+
+class TipoVehiculo {
+    - codigoTipoVehiculo
+    - descripcion
+}
+
+class Reserva {
+    - Cliente cliente
+    - horaReserva
+    - maquinaReservada
+    - TipoLavado tipoReserva
+}
+
+class TipoLavado {
+    - codigoTipoLavado
+    - TipoCliente tipoCliente
+    - TipoVehiculo tipoVehiculo
+    - descripcion
+    - costo
+}
+
+class Ticket {
+    - Reserva reserva
+
+    + calcularCantidadLavados()
+    + calcularImportesPorTipo()
+    + tipoClienteMasFrecuente()
+}
+
+Cliente "0..*" -- "1" TipoCliente
+Cliente "1" -right- "0..*" Vehiculo
+Cliente "0..*" -left- "1" Reserva
+Vehiculo "0..*" -- "1" TipoVehiculo
+Reserva "0..*" -- "1" TipoLavado
+Reserva "1" -- "1" Ticket
+
+@enduml

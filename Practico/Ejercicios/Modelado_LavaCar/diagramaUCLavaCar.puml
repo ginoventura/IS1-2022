@@ -1,0 +1,32 @@
+@startuml
+
+actor Auxiliar as aux
+usecase "Registrar cliente" as uc1
+usecase "Modificar cliente" as uc2
+usecase "Baja de cliente" as uc3
+usecase "Registrar vehiculo" as uc4
+usecase "Baja de vehiculo" as uc5
+usecase "Registrar reserva" as uc6
+usecase "Cancelar reserva" as uc7
+usecase "Generar ticket" as uc8
+usecase "Generar informe por tipo de lavado" as uc9
+usecase "Generar informe por tipo de vehiculo" as uc10
+usecase "Generar informe por tipo de lavado y periodo" as uc11
+usecase "Generar informe de tipo de cliente mas frecuente" as uc12
+
+aux --> uc1
+aux -up-> uc2
+aux -up-> uc3
+aux -left-> uc4
+aux -up-> uc5
+aux --> uc6
+uc1 <.. uc6 : <<include>>
+uc4 <.. uc6 : <<include>>
+uc6 <.. uc7 : <<extend>>
+aux -right-> uc8
+uc8 <.right. uc9 : <<extend>>
+uc8 <.up. uc10 : <<extend>>
+uc8 <.. uc11 : <<extend>>
+uc8 <.. uc12 : <<extend>>
+
+@enduml

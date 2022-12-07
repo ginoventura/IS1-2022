@@ -1,0 +1,80 @@
+@startuml
+abstract class Persona {
+    - nombre
+    - apellido
+    - dni
+    - email
+    - telefono
+}
+
+class Cliente extends Persona{
+    - nroCliente
+    - fechaAlta
+}
+
+class Veterinario extends Persona {
+    - matricula
+    - fechaContratacion
+}
+
+class Mascota {
+    - Cliente
+    - tipo
+    - nombre
+    - edad
+}
+
+class Historico {
+    - fechaActual
+    - cantConsultas
+}
+
+class Consulta {
+    - nroConsulta
+    - fecha
+    - hora
+    - descripcion
+}
+
+class Factura {
+    - nroFactura
+    - fecha
+    - Detalle
+}
+
+class DetalleFactura {
+    - Consulta
+    - pagada
+    - Factura
+}
+
+class DetalleConsulta {
+    - nroConsulta
+    - tiempoConsulta
+    - Veterinario
+    - Mascota
+    - TipoConsulta
+}
+
+class TipoConsulta {
+    - nombre
+    - descripcion
+    - precio
+}
+
+class Receta {
+    - nroConsulta
+    - medicamento
+    - tratamiento
+}
+
+Cliente "1" -- "0..*" Mascota
+Mascota "1" -- "1" Historico
+Mascota "1" -left-* "0..*" Consulta
+Consulta "0..*" -up- "1" TipoConsulta
+Consulta "1" *-- "1" DetalleConsulta
+Consulta "1" *-- "1..*" Receta
+Consulta "1" *-left- "1" Factura
+Factura "1" *-- "1..*" DetalleFactura
+
+@enduml

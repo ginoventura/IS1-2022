@@ -1,0 +1,54 @@
+@startuml
+
+left to right direction
+
+actor "Encargado del taller" as enc
+actor "Mecánico" as mec
+
+rectangle Clientes {
+    usecase "1. Registrar cliente" as uc1
+    usecase "2. Modificar cliente" as uc2
+    usecase "3. Baja de cliente" as uc3
+}
+
+rectangle Vehiculos {
+    usecase "4. Registrar vehiculo" as uc4
+    usecase "5. Modificar vehículo" as uc5
+    usecase "6. Desvincular cliente de vehículo" as uc6
+}
+
+rectangle Mecánicos {
+    usecase "7. Registrar mecánico" as uc7
+    usecase "8. Modificar mecánico" as uc8
+    usecase "9. Baja de mecánico" as uc9
+}
+
+rectangle OrdenesTrabajo {
+    usecase "10. Generar orden de trabajo" as uc10
+    usecase "11. Modificar orden de trabajo" as uc11
+    usecase "12. Cancelar orden de trabajo" as uc12
+    usecase "13. Aceptar orden de trabajo" as uc13
+    usecase "14. Actualizar orden de trabajo" as uc14
+}
+
+enc -up-> uc1
+enc -up-> uc2
+enc -up-> uc3
+
+enc -up-> uc4
+enc -up-> uc5
+enc -up-> uc6
+
+enc --> uc7
+enc --> uc8
+enc --> uc9
+
+enc ---> uc10
+enc ---> uc11
+enc ---> uc12
+enc ---> uc13
+enc ---> uc14 
+
+mec -up--> uc14
+
+@enduml

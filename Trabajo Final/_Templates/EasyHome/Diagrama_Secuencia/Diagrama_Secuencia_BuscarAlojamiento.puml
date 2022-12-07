@@ -1,0 +1,52 @@
+@startuml Diagrama_secuencia_buscar_reservar_alojamiento
+
+/' Flujo Busqueda '/
+actor Inquilino
+boundary PantallaBuscarAlojamientos
+control GestorAlojamientos
+entity Alojamiento
+
+activate Inquilino
+Inquilino -> PantallaBuscarAlojamientos: tomarOpcionBuscarAlojamientos()
+activate PantallaBuscarAlojamientos
+PantallaBuscarAlojamientos -> PantallaBuscarAlojamientos: habilitarPantalla()
+deactivate PantallaBuscarAlojamientos
+
+Inquilino -> PantallaBuscarAlojamientos: buscarAlojamiento(numeroDormitorios, numeroBaños,\n ocupacionMaxima, comodidades, zonaTuristica,\n precioMinimo, precioMaximo, valoracionMinima,\n valoracionMaxima, fechaCheckIn, fechaCheckOut, ordenamiento)
+activate PantallaBuscarAlojamientos
+PantallaBuscarAlojamientos -> GestorAlojamientos: buscarAlojamientos(filtros)
+activate GestorAlojamientos
+GestorAlojamientos -> GestorAlojamientos: buscarAlojamientos(filtros)
+loop array_size
+    GestorAlojamientos -> Alojamiento: existeAlojamiento()
+    activate Alojamiento
+    Alojamiento -> GestorAlojamientos: true
+    deactivate Alojamiento
+end 
+
+
+control GestorReservas
+entity Reserva
+
+GestorAlojamientos -> GestorReservas : consultarDisponibilidad(List<Alojamiento>,\n fechaCheckIn, fechaCheckOut) 
+deactivate GestorAlojamientos
+
+activate GestorReservas
+loop array_size && true
+    GestorReservas -> Reserva: existeReserva()
+    activate Reserva
+    Reserva -> GestorReservas: false
+    deactivate Reserva
+end
+
+
+GestorReservas -> PantallaBuscarAlojamientos: mostrarAlojamientoDisponibles(List<Alojamiento>)
+deactivate GestorReservas
+
+Inquilino -> PantallaBuscarAlojamientos : tomarAlojamiento(Alojamiento)
+PantallaBuscarAlojamientos -> PantallaBuscarAlojamientos : mostrarAlojamiento
+
+deactivate PantallaBuscarAlojamientos
+deactivate Inquilino
+
+@enduml

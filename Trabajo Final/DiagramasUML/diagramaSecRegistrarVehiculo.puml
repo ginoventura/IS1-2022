@@ -1,0 +1,36 @@
+@startuml
+
+actor Encargado
+boundary PantallaRegistrarVehiculo
+control GestorVehiculo
+entity Vehiculo
+entity nuevoVehiculo
+
+activate Encargado
+Encargado -> PantallaRegistrarVehiculo: seleccionarOpcionRegistrarVehiculo()
+activate PantallaRegistrarVehiculo
+PantallaRegistrarVehiculo -> PantallaRegistrarVehiculo: habilitarPantalla()
+deactivate PantallaRegistrarVehiculo
+
+Encargado -> PantallaRegistrarVehiculo: registrarVehiculo(Cliente, nroVehiculo, marca, modelo,\n version, dominio, anioPatentamiento, color, fechaAlta)
+activate PantallaRegistrarVehiculo
+PantallaRegistrarVehiculo -> GestorVehiculo: registrarVehiculo(Cliente, nroVehiculo, marca, modelo,\n version, dominio, anioPatentamiento, color, fechaAlta)
+activate GestorVehiculo
+GestorVehiculo -> GestorVehiculo: validarVehiculo()
+loop 
+    GestorVehiculo -> Vehiculo: existeVehiculo(nroVehiculo)
+    activate Vehiculo
+    Vehiculo --> GestorVehiculo: false
+    deactivate Vehiculo
+end
+
+GestorVehiculo -> nuevoVehiculo: newVehiculo(Cliente, nroVehiculo, marca, modelo,\n version, dominio, anioPatentamiento, color, fechaAlta)
+activate nuevoVehiculo
+nuevoVehiculo -> GestorVehiculo
+deactivate nuevoVehiculo
+GestorVehiculo -> PantallaRegistrarVehiculo: mostrarMsjConfirmacion()
+deactivate GestorVehiculo
+deactivate PantallaRegistrarVehiculo
+deactivate Encargado
+
+@enduml

@@ -1,0 +1,17 @@
+@startuml Diagrama_Estado_Alohamiento_EasyHome
+
+[*] -> Publicado : [Alojamiento no registrado] /\n newAlojamiento(publicado: true)
+[*] -down-> Despublicado : [Alojamiento no registrado] /\n newAlojamiento(publicado: false)
+state Publicado {
+    [*] -right-> Libre
+    Libre -down-> Reservado : [Seña pagada] /\n reservarAlojamiento()
+    Libre -down-> Alquilado : [Check-in] / registrarCheckIn()
+    Reservado -> Alquilado : [Check-in] /\n registrarCheckIn()
+    Reservado -> Libre : [Reserva canelada] /\n cancelarReserva()
+    Alquilado -> Libre : [Check-out] /\n registrarCheckOut()
+    Alquilado -> Reservado : [Check-out y Check-in el mismo dia] /\n registrarCheckOut()
+}
+Publicado -> Despublicado : [No hay reservas en curso] /\n despublicarAlojamiento()
+Despublicado -> Publicado : [Aceptacion de Term. y Cond.] /\n publicarAlojamiento()
+
+@enduml 

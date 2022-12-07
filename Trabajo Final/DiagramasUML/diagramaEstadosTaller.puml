@@ -1,0 +1,43 @@
+@startuml
+
+state "Pendiente de presupuesto" as estado1 
+state "Presupuestada" as estado2
+state "Pendiente de aceptación" as estado3
+state "Aceptada" as estado4
+state "Cancelada" as estado5
+state "Rechazada" as estado6
+state "Abierta" as estado7
+state "Valorizada" as estado8
+state "Cerrada" as estado9
+state "Pendiente de pago" as estado10
+state "Cobrada" as estado11
+
+[*] --> estado1 : validarDatos()
+
+estado1 -right-> estado2 : generarOrden()
+estado2 --> estado3 
+estado3 -right-> estado4 : notificarCliente()
+estado3 -right-> estado5 : cancelarOrden()
+estado3 -right-> estado6 : rechazarOrden()
+estado4 -right-> estado7 : aceptarOrden()
+estado7 -right-> estado8
+estado8 --> estado9
+estado9 -right-> estado10 : notificarCliente() 
+estado10 --> estado11 : cobrarOrden()
+estado4 --> estado5
+estado11 --> [*]
+estado5 --> [*]
+estado6 --> [*]
+'estado4 --> estado5 : aceptarOrden()
+'estado4 --> estado6 : cancelarOrden()
+'estado5 --> estado7 : actualizarEstado()
+'estado7 -right-> estado8 : actualizarEstado()
+'estado8 --> estado9  
+'estado9 -right-> estado10 
+'estado10 --> estado11 : notificarCliente() 
+'estado11 -right-> estado12 : cobrarOrden()
+
+'estado6 --> [*]
+'estado12 -right-> [*] 
+
+@enduml

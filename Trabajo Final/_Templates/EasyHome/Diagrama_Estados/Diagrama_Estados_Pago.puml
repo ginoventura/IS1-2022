@@ -1,0 +1,10 @@
+@startuml Diagrama_Estado_Pago_EasyHome
+
+[*] -> Emitido
+Emitido -> Rechazado : [Rechazar Pago]  \n / error X de plataforma Pago
+Emitido -down-> Confirmado : [Aceptado por entidad bancaria] \n / fondos suficientes
+Confirmado -up-> Rechazado : error X de plataforma Pago
+Confirmado -right-> Acreditado : [Acreditado en cuenta correspondiente]
+Acreditado --> [*]
+
+@enduml 

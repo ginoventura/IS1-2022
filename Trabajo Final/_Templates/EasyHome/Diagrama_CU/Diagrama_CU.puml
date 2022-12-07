@@ -1,0 +1,54 @@
+@startuml Diagrama_CU
+actor Inquilino
+Inquilino -up-> (Crear usuario)
+Inquilino -up-> (Editar usuario)
+Inquilino -up-> (Borrar usuario)
+Inquilino -up-> (Login)
+Inquilino -left-> (Consultar reserva)
+Inquilino -left-> (Editar reserva)
+Inquilino -down-> (Valorar alojamiento)
+Inquilino -down-> (Buscar alojamiento)
+Inquilino -down-> (Alquilar alojamiento)
+Inquilino -down-> (Reservar alojamiento)
+Inquilino -right-> (Realizar pago)
+Inquilino --> (Cancelar reserva)
+
+(Alquilar alojamiento) ..> (Registrar check-in) : <<includes>>
+(Reservar alojamiento) ..> (Realizar pago): <<includes>>
+
+actor Propietario
+Propietario --> (Publicar alojamiento)
+Propietario --> (Despublicar alojamiento)
+Propietario --> (Consultar alojamientos)
+Propietario --> (Editar alojamiento)
+
+actor Administrador
+Administrador --> (Registrar check-in)
+Administrador --> (Registrar check-out)
+Administrador --> (Registrar inquilino)
+Administrador --> (Cobrar)
+Administrador -up-> (Login)
+
+actor Plataforma_de_Pago
+Plataforma_de_Pago -up-> (Realizar pago)
+Plataforma_de_Pago -right-> (Devolucion dinero)
+Plataforma_de_Pago --> (Cobrar)
+
+note right of (Propietario)
+  Los casos de uso del
+  inquilino tambien son
+  del propietario. 
+end note
+
+note bottom of (Valorar alojamiento)
+  La valoracion se hace
+  luego del check-out.
+end note
+
+note left of (Login)
+  Cualquier CU incluye a login
+  excepto Buscar alojamiento, crear
+  usuario y devolucion de dinero.
+end note
+
+@enduml

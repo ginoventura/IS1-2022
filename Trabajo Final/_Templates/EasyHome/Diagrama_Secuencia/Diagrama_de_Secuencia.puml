@@ -1,0 +1,31 @@
+@startuml Diagrama_secuencia_consultar_reserva
+
+actor Inquilino
+boundary PantallaConsultarReserva
+control GestorReserva
+entity Reserva
+
+activate Inquilino
+Inquilino -> PantallaConsultarReserva: tomarOpcionConsultarReserva()
+activate PantallaConsultarReserva
+PantallaConsultarReserva -> PantallaConsultarReserva: habilitarPantalla()
+deactivate PantallaConsultarReserva
+
+Inquilino -> PantallaConsultarReserva: consultarReserva(nroReserva)
+activate PantallaConsultarReserva
+PantallaConsultarReserva -> GestorReserva: consultarReserva(nroReserva)
+activate GestorReserva
+GestorReserva -> GestorReserva: buscarReserva()
+loop array_size & false
+    GestorReserva -> Reserva: existeReserva()
+    activate Reserva
+    Reserva -> GestorReserva: true
+    deactivate Reserva
+end
+
+GestorReserva -> PantallaConsultarReserva: mostrarReserva(Reserva)
+deactivate GestorReserva
+deactivate PantallaConsultarReserva
+deactivate Inquilino
+
+@enduml

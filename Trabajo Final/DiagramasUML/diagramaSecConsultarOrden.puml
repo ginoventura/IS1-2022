@@ -1,0 +1,31 @@
+@startuml 
+
+actor Encargado
+boundary PantallaConsultarOrdenes
+control GestorOrdenes
+entity Orden
+
+activate Encargado
+Encargado -> PantallaConsultarOrdenes: seleccionarOpcionOrdenes()
+activate PantallaConsultarOrdenes
+PantallaConsultarOrdenes -> PantallaConsultarOrdenes: habilitarPantalla()
+deactivate PantallaConsultarOrdenes
+
+Encargado -> PantallaConsultarOrdenes: consultarOrdenes(nroOrden)
+activate PantallaConsultarOrdenes
+PantallaConsultarOrdenes -> GestorOrdenes: consultarOrden(nroOrden)
+activate GestorOrdenes
+GestorOrdenes -> GestorOrdenes: buscarOrden(nroOrden)
+loop 
+    GestorOrdenes -> Orden: existeOrden(nroOrden)
+    activate Orden
+    Orden -> GestorOrdenes: true
+    deactivate Orden
+end
+
+GestorOrdenes -> PantallaConsultarOrdenes: mostrarOrden(Orden)
+deactivate GestorOrdenes
+deactivate PantallaConsultarOrdenes
+deactivate Encargado
+
+@enduml

@@ -1,0 +1,54 @@
+@startuml
+
+|#AliceBlue|Encargado|
+start
+:Selección opción Clientes;
+
+|#LightSkyBlue|Sistema|
+:Mostrar listado de Clientes;
+
+|#AliceBlue|Encargado|
+:Verificar los datos del 
+    Cliente requerido;
+
+|#AliceBlue|Encargado|
+if (Los datos están correctos) then (NO)
+    |#AliceBlue|Encargado|
+    :Selección de cliente con 
+           datos incorrectos;
+    |#AliceBlue|Encargado|
+    :Selección de opción 
+       "modificar cliente";
+    |#AliceBlue|Encargado|
+else(SI)
+    stop
+endif
+
+|#LightSkyBlue|Sistema|
+:Mostrar formulario para 
+    modificar los datos;
+
+|#AliceBlue|Encargado|
+:Modificar datos personales 
+                del cliente;
+
+|#AliceBlue|Encargado|
+if (Selección opción "Guardar") then (SI)
+    |#LightSkyBlue|Sistema|
+    :Solicitar confirmación de modificación;
+    |#AliceBlue|Encargado|
+else(NO)
+    stop
+endif
+
+|#AliceBlue|Encargado|
+if (Selección opción "Confirmar") then (SI)
+    |#LightSkyBlue|Sistema|
+    :Cliente modificado con éxito;
+    stop
+    |#AliceBlue|Encargado|
+else(NO)
+    stop
+endif
+
+@enduml

@@ -1,0 +1,93 @@
+@startuml
+
+@startuml
+
+left to right direction
+
+actor "Encargado del taller" as enc
+actor "Mecánico" as mec
+actor "Actualizador" as con
+
+rectangle Clientes {
+    usecase "1. Registrar cliente" as uc1
+    usecase "2. Modificar cliente" as uc2
+    usecase "3. Baja de cliente" as uc3
+}
+
+rectangle Vehiculos {
+    usecase "4. Registrar vehiculo" as uc4
+    usecase "5. Modificar vehículo" as uc5
+    usecase "6. Desvincular cliente de vehículo" as uc6
+    usecase "7. Eliminar vehículo" as uc7
+}
+
+rectangle Mecánicos {
+    usecase "8. Registrar mecánico" as uc8
+    usecase "9. Modificar mecánico" as uc9
+    usecase "10. Baja de mecánico" as uc10
+}
+
+rectangle OrdenesTrabajo {
+    usecase "11. Consultar ordenes de trabajo" as uc11
+    usecase "12. Generar orden de trabajo" as uc12
+    usecase "13. Modificar orden de trabajo" as uc13
+    usecase "14. Actualizar estado de orden de trabajo" as uc14
+    usecase "15. Aceptar orden de trabajo" as uc15
+    usecase "16. Cancelar orden de trabajo" as uc16
+    usecase "17. Confirmar presupuesto de la orden" as uc17
+    usecase "18. Abrir orden de trabajo" as uc18
+    usecase "19. Cerrar orden de trabajo" as uc19
+    usecase "20. Valorizar orden de trabajo" as uc20
+    usecase "21. Generar presupuesto" as uc21
+}
+
+rectangle Servicios {
+    usecase "22. Registrar servicio" as uc22
+    usecase "23. Modificar servicio" as uc23
+    usecase "24. Eliminar servicio" as uc24
+}
+
+usecase "25. Generar reportes de la empresa" as uc25
+usecase "26. Generar reporte para cliente" as uc26
+
+enc -up-> uc1
+enc -up-> uc2
+enc -up-> uc3
+
+enc -up-> uc4
+enc -up-> uc5
+enc -up-> uc6
+enc -up-> uc7
+
+uc1 <.right. uc4 : <<extends>>
+
+enc --> uc8
+enc --> uc9
+enc --> uc10
+
+enc ---> uc11
+enc ---> uc12
+enc ---> uc13
+enc ---> uc15
+
+uc14 <.. uc16 : <<extends>>
+uc14 <.. uc17 : <<extends>>
+uc14 <.. uc18 : <<extends>>
+uc14 <.. uc19 : <<extends>>
+uc14 <.. uc20 : <<extends>>
+
+uc15 ..> uc21 : <<includes>>
+
+enc --> uc22
+enc --> uc23
+enc --> uc24
+
+enc --|> con
+mec -up-|> con
+
+con -right-> uc14
+
+enc --> uc25
+enc -up-> uc26
+
+@enduml

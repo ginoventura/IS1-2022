@@ -1,0 +1,57 @@
+@startuml Diagrama_secuencia_buscar_reservar_alojamiento
+
+/' Flujo Busqueda '/
+actor Inquilino
+activate Inquilino
+boundary PantallaReservarAlojamiento
+
+/' Flujo Reserva '/
+control GestorReservas
+entity Reserva
+entity NuevaReserva
+
+Inquilino -> GestorReservas : tomarOpcionReservarAlojamiento()
+activate GestorReservas
+GestorReservas -> Reserva: existeReserva(Alojamiento,\n fechaCheckIn, fechaCheckOut)
+activate Reserva
+Reserva -> GestorReservas: false
+deactivate Reserva
+
+GestorReservas -> PantallaReservarAlojamiento : mostrarResumenReserva(fechaCheckIn, fechaCheckOut,\n cantidadInquilinos, Inquilino, Alojamiento,\n Propietario, montoTotal)
+deactivate GestorReservas
+activate PantallaReservarAlojamiento
+PantallaReservarAlojamiento -> PantallaReservarAlojamiento : mostrarResumenReserva
+deactivate PantallaReservarAlojamiento
+
+Inquilino -> PantallaReservarAlojamiento : tomarOpcionReservar()
+activate PantallaReservarAlojamiento
+PantallaReservarAlojamiento -> PantallaReservarAlojamiento : mostrarFormasDePago()
+Inquilino -> PantallaReservarAlojamiento : tomarFormaDePago()
+PantallaReservarAlojamiento -> PantallaReservarAlojamiento : mostrarFormularioDePago()
+deactivate PantallaReservarAlojamiento
+
+control PlataformaPago
+entity NuevoPago
+Inquilino -> PlataformaPago : tomarOpcionPagar(datosDelMedioDePago)
+activate PlataformaPago
+PlataformaPago -> NuevoPago : nuevoPago(datosDePago)
+activate NuevoPago
+deactivate NuevoPago
+PlataformaPago -> GestorReservas : confirmacionDePago(codigoDePago, codigoDeReferencia,\n montoPagado, formaDePago, fechaDePago)
+activate GestorReservas
+deactivate PlataformaPago
+
+
+
+GestorReservas -> NuevaReserva : nuevaReserva(fechaCheckIn, fechaCheckOut,\n cantidadInquilinos, Inquilino, Alojamiento,\n Propietario, montoTotal)
+activate NuevaReserva
+deactivate NuevaReserva
+GestorReservas -> PantallaReservarAlojamiento : comprobanteDePagoDeReserva(codigoDePago,\n codigoDeReferencia, montoPagado, formaDePago,\n fechaDePago, Alojamiento, Propietario)
+activate PantallaReservarAlojamiento
+PantallaReservarAlojamiento -> PantallaReservarAlojamiento : mostrarComprobante()
+
+deactivate PantallaReservarAlojamiento
+deactivate GestorReservas
+deactivate Inquilino
+
+@enduml

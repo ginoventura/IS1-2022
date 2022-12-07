@@ -1,0 +1,147 @@
+@startuml
+
+left to right direction
+
+class Persona {
+    - String nombre
+    - String apellido
+    - String telefono
+    - String domicilio
+}
+
+class Cliente {
+    - int nroCliente
+    - String barrio
+    - String email
+
+    + registrarCliente()
+    + modificarCliente()
+    + eliminarCliente()
+}
+
+class Mecanico {
+    - int nroMecanico
+    - String nombreUsuario
+    - String contraseña
+
+    + registrarMecanico()
+    + modificarMecanico()
+    + bajaMecanico()
+}
+
+class Vehiculo {
+    - String dominio
+    - int añoPatentamiento
+    - String color
+    - Date fechaAlta
+
+    + registrarVehiculo()
+    + modificarVehiculo()
+    + eliminarVehiculo()
+    + desvincularCliente()
+    + generarInformeReparaciones()
+}
+
+class Marca {
+    - String nombre
+    - String descripcion
+    - String pais
+}
+
+class Modelo {
+    - String nombre
+    - String descripcion
+}
+
+class Versión {
+    - String nombre
+    - String descripcion
+    - String año
+}
+
+class OrdenesTrabajo {
+    - int nroOrden
+    - DateTime fechaHoraIngreso
+    - String kilometraje
+    - String nivelCombustible
+    - String detallesCliente
+    - String responsable
+    
+    + validarDatos()
+    + generarOrden()
+    + confirmarOrden()
+    + modificarOrden()
+    + cancelarOrden()
+    + actualizarEstado()
+}
+
+class DetalleOrdenTrabajo {
+    - int nroDetalle
+    - String descripcion
+    - float precioUnitario
+    - float precioTotal
+}
+
+class EstadoOrdenTrabajo {
+    - int codigoEstado
+    - String estado
+    - String descripcion
+}
+
+class Trabajo {
+    - int codigoTrabajo
+    - String descripcion
+    - String responsable
+    - DateTime tiempoReal
+}
+
+class Servicios {
+    - int codigoServicio
+    - String descripcion
+    - float precio
+    - DateTime tiempo
+
+    + registrarServicio()
+    + modificarServicio()
+    + eliminarServicio()
+}
+
+class Actividades {
+    - String descripcion
+    - DateTime tiempoActividad
+    - String herramientas
+}
+
+class Repuestos {
+    - int idRepuesto
+    - String descripcion
+    - String marca
+    - String modelo
+    - String version
+    - int año
+    - float precio
+}
+
+class Presupuesto {
+    - String tiempoDemora
+    - float costoTotal
+    - String estadoPresupuesto
+}
+
+Persona <|-- Cliente
+Persona <|-- Mecanico
+Cliente "0..1" --> "1..*" Vehiculo
+Vehiculo "1" <-- "1..*" OrdenesTrabajo
+Mecanico "1..*" <-- "0..*" OrdenesTrabajo
+OrdenesTrabajo "1" --> "1" Presupuesto
+Repuestos "0..*" --> "0..*" Servicios
+Vehiculo "1..*" <-- "1" Marca
+Marca "1" <-- "1..*" Modelo
+Modelo "1" <-down- "1..*" Versión
+OrdenesTrabajo "1" -up-> "1" DetalleOrdenTrabajo
+Servicios "1..*" <-- "0..*" DetalleOrdenTrabajo
+Servicios "1..*" <-- "1..*" Actividades
+EstadoOrdenTrabajo --> "1" OrdenesTrabajo
+DetalleOrdenTrabajo "1" <-- "0..*" Trabajo
+
+@enduml

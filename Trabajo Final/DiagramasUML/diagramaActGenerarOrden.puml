@@ -1,0 +1,47 @@
+@startuml Diagrama_actividades_registrar_orden
+
+|#AliceBlue|Encargado|
+start
+:Selección opción Ordenes de Trabajo;
+
+|#LightSkyBlue|Sistema|
+:Mostrar listado de OTs;
+
+|#AliceBlue|Encargado|
+:Selección opción registrar nueva OT;
+
+|#AntiqueWhite|Sistema|
+:Mostrar formulario para registrar la OT;
+
+|#AliceBlue|Encargado|
+:Seleccionar cliente;
+
+|#AliceBlue|Encargado|
+:Seleccionar vehículo del cliente;
+
+|#AliceBlue|Encargado|
+:Seleccionar servicios a realizar;
+
+|#AliceBlue|Encargado|
+:Completar información adicional;
+
+|#AliceBlue|Encargado|
+if (Selección opción "Guardar") then (SI)
+    |#LightSkyBlue|Sistema|
+    :Muestra resumen de la OT;
+    |#AliceBlue|Encargado|
+else(NO)
+    stop
+endif
+
+|#AliceBlue|Encargado|
+if (Selección opción "Confirmar") then (SI)
+    |#LightSkyBlue|Sistema|
+    :Generar Presupuesto de la OT;
+    stop
+    |#AliceBlue|Encargado|
+else(NO)
+    stop
+endif
+
+@enduml

@@ -1,0 +1,41 @@
+@startuml 
+
+actor Encargado
+boundary PantallaRegistrarOrden
+control GestorOrdenes
+entity Orden
+entity Vehiculo
+entity nuevaOrden
+
+activate Encargado
+Encargado -> PantallaRegistrarOrden: opcionRegistrarOrden()
+activate PantallaRegistrarOrden
+PantallaRegistrarOrden -> PantallaRegistrarOrden: habilitarPantalla()
+deactivate PantallaRegistrarOrden
+
+Encargado -> PantallaRegistrarOrden: registrarOrden(nroOrden, Vehiculo, fechaHoraIngreso,\n kilometraje, nivelCombustible, detallesCliente,\n responsable, estadoOrden)
+activate PantallaRegistrarOrden
+PantallaRegistrarOrden -> GestorOrdenes: registrarOrden(nroOrden, Vehiculo, fechaHoraIngreso,\n kilometraje, nivelCombustible, detallesCliente,\n responsable, estadoOrden)
+activate GestorOrdenes
+GestorOrdenes -> GestorOrdenes: validarOrden()
+loop validar si el vehículo tiene una orden\n en estado "Aceptada" o "Presupuestada"
+    GestorOrdenes -> Orden: existeOrden(estadoOrden, Vehiculo)
+    activate Orden
+    Orden -> Vehiculo : existeVehiculo(Vehiculo)
+    activate Vehiculo
+    Vehiculo -> Orden : true
+    deactivate Vehiculo
+    Orden --> GestorOrdenes: false
+    deactivate Orden
+end
+
+GestorOrdenes -> nuevaOrden: newOrden(nroOrden, Vehiculo, fechaHoraIngreso,\n kilometraje, nivelCombustible, detallesCliente,\n responsable, estadoOrden)
+activate nuevaOrden
+nuevaOrden -> GestorOrdenes
+deactivate nuevaOrden
+
+GestorOrdenes -> PantallaRegistrarOrden: mostrarMsjConfirmacion()
+deactivate PantallaRegistrarOrden
+deactivate Encargado
+
+@enduml

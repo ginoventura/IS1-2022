@@ -1,0 +1,187 @@
+@startuml EasyHome
+
+abstract Persona {
+    nombre: String
+    apellido: String
+    tipoDNI: String
+    numeroDNI: String
+    fechaNacimiento: Date
+    telefono: String
+    direccion: String
+    usuario: Usuario
+    -editarPersona(nombre, apellido, 
+    tipoDNI, numeroDNI, fechaNacimiento, 
+    email, telefono, direccion)
+}
+
+class Usuario {
+    email: String
+    contraseña: String
+    validado: bool
+    rol: Rol 
+    +validarUsuario()
+    -editarUsuario(usuario, contraseña)
+    -borrarUsuario()
+    -login()
+}
+
+class Rol {
+    codigoRol: Int
+    nombreRol: String
+}
+
+class Inquilino {
+    -editarPersona(nombre, apellido,\ntipoDNI, numeroDNI,fechaNacimiento,\nemail, telefono, direccion)
+}
+
+class Propietario {
+    propiedades: List<Alojamiento>
+    -editarPersona(nombre, apellido,\ntipoDNI, numeroDNI,fechaNacimiento,\nemail, telefono, direccion)
+}
+
+class Alojamiento {
+    numeroDormitorios: int
+    numeroBaños: int
+    ocupacionMaxima: int
+    comodidades: List<Comodidad>
+    propietario: Propietario
+    direccion: Direccion
+    zonaTuristica: ZonaTuristica
+    fotos: List<String>
+    estado: Estado
+    precio: float
+    formasDePago: List<FormaDePago>
+    publicado: Boolean
+    valoracion: List<Valoracion>
+    +buscarAlojamiento(numeroDormitorios, numeroBaños,\n ocupacionMaxima, comodidades, zonaTuristica,\n precioMinimo, precioMaximo, valoracionMinima,\n valoracionMaxima, fechaCheckIn, fechaCheckOut, ordenamiento)
+    +editarAlojamiento(numeroDormitorios, numeroBaños,\n ocupacionMaxima, comodidades, zonaTuristica,\n direccion, fotos, precio)
+    +getAlojamientoById(idPropietario)
+    +getAlojamiento()
+    +ordenarAlojamientos(int)
+    +eliminarAlojamiento(int)
+    +publicarAlojamiento()
+    +suspenderAlojamiento()
+    +actualizarEstado(int)
+    +registrarCheckIn()
+    +registrarCheckOut()
+    +valorarAlojamiento(Valoracion)
+    -actualizarValoracion()
+}
+
+class Direccion {
+    calle: String
+    numeroCalle: Int
+    piso: Int
+    numeroDepto: String
+    localidad: String
+    provincia: String
+    pais: String
+}
+
+class ZonaTuristica {
+    nombre: String
+    longitud: float
+    latitud: float
+    codigoPostal: String
+    codigoZona: int
+    +getZonaTuristica(int)
+}
+
+class Estado {
+    nombreEstado: String
+    codigoEstado: int
+    descripcion: String
+    +getEstado(int)
+}
+
+class Comodidad {
+    nombreComodidad: String
+    codigoComodidad: int
+    descripcion: String
+    +getComodidad(int)
+}
+
+class Reserva {
+    codigoReserva: String
+    fechaInicio: Date
+    fechaFin: Date
+    inquilino: Inquilino
+    alojamiento: Alojamiento
+    cantidadInquilinos: int
+    monto: float
+    estadoReserva: Estado
+    +consultarReserva(Reserva)
+    +cancelarReserva(Reserva)
+    +editarReserva(Reserva)
+    +existeReserva(fechaInicio, fechaFin, 
+    Alojamiento)
+    +actualizarEstadoReserva()
+}
+
+class Alquiler {
+    codigoAlquiler: String
+    codigoDeReservaAsociada: String | NULL
+    fechaInicio: Date
+    fechaFin: Date
+    inquilino: Inquilino
+    alojamiento: Alojamiento
+    cantidadInquilinos: int
+    monto: float
+    estadoAlquiler: bool
+    +consultarAlquiler()
+    +actualizarEstadoAlquiler()
+}
+
+class Pago {
+    codigoDePago: int
+    codigoDeReferencia: String
+    montoPagado: float
+    formaDePago: FormaDePago
+    fechaDePago: Date
+    +sumarPagosReserva(String)
+    -sumarMontosPagados()
+}
+
+class FormaDePago {
+    codigoFormaDePago: int
+    nombreFormaDePago: String
+    descripcion: String
+    +getFormaDePago(int)
+}
+
+class Valoracion {
+    usuario: Usuario
+    puntaje: float
+    comentario: String
+    +editarValoracion()
+    +borrarValoracion()
+}
+
+Persona <|-right- Inquilino
+Persona <|-down- Propietario
+
+Persona "1" -left-> "1" Usuario
+
+Alojamiento "0-n" <-left- "1" Propietario
+Alojamiento "0-n" o-> "1-n" Comodidad
+Alojamiento "0-n" --> "1" ZonaTuristica
+Alojamiento "0-n" --> "1" Estado
+Alojamiento "n" -->  "n" FormaDePago
+Alojamiento "1" -left->  "0-n" Valoracion
+Alojamiento "1" <-up- "0-n" Reserva
+Alojamiento "1" <-up- "0-n" Alquiler
+Alojamiento "1" -right-> "1" Direccion 
+
+Usuario "1" --> "0-n" Reserva
+Usuario "1" --> "0-n" Alquiler
+Usuario "1" --> "0-n" Valoracion
+Usuario "0-n" --> "1" Rol
+
+Reserva "0-1" -left-> "0-1" Alquiler
+Reserva "0-1" --> "1-n" Pago
+
+Pago "0-n" --> "1-n" FormaDePago
+
+Alquiler "0-1" --> "0-n" Pago
+
+@enduml
